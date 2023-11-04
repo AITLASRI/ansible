@@ -1,0 +1,24 @@
+---
+- hosts: all
+  become: true
+  remote_user: ayoub
+  gather_facts: no
+
+  vars:
+    container_name: docker-test
+    container_image: aitlasri1/testchatapp:v1
+
+  tasks:
+    - name: Pull Docker image
+      docker_image:
+        name: "{{ container_image }}"
+        source: pull
+
+    - name: Deploy container
+      docker_container:
+        name: "{{ container_name }}"
+        image: "{{ container_image }}"
+        state: started
+        ports:
+          - "8080:80"
+        restart_policy: always

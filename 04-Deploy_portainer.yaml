@@ -1,0 +1,23 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: no
+
+  tasks:
+
+    - name: Pull Docker image
+      docker_image:
+        name: portainer/portainer-ce
+        source: pull
+
+    - name: Deploy Portainer
+      docker_container:
+        name: portainer
+        image: portainer/portainer-ce
+        ports:
+          - "9000:9000"
+          - "8000:8000"
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - portainer_data:/data
+        restart_policy: always

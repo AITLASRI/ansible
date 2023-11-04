@@ -1,0 +1,11 @@
+---
+- hosts: server_docker
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: Install apache and php
+      apt:
+        name:
+          - apache2
+          - libapache2-mob-php
+        state: latest

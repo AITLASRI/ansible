@@ -1,0 +1,22 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: no
+
+  tasks:
+    - name: Pull NGINX Proxy Manager Docker image
+      docker_image:
+        name: 'jc21/nginx-proxy-manager:latest'
+        source: pull
+
+    - name: Create NGINX Proxy Manager Docker container
+      docker_container:
+        name: nginx_proxy_manager
+        image: 'jc21/nginx-proxy-manager:latest'
+        ports:
+          - '80:80'
+          - '81:81'
+          - '443:443'
+        volumes:
+          - Nginx_data:/data
+        restart_policy: always
